@@ -1,0 +1,20 @@
+{
+  "ABS": {
+    "usage": "ABS(number)",
+    "params": "number：需要计算绝对值的实数或单元格引用。如果参数是非数值，返回 #VALUE! 错误。",
+    "notes": "• ABS 常用于计算误差、偏差或距离\\n• 与条件格式配合可快速标记偏差较大的值\\n• ABS 不影响正数，只将负数转为正数\\n• 嵌套用法：ABS(A1-B1) 计算两值之差的绝对值",
+    "example": "=ABS(-15) → 15\\n=ABS(3.7) → 3.7\\n=ABS(A1-B1) → 返回 A1 与 B1 的差值绝对值",
+    "rating": "★★★★☆",
+    "stars": "★★★★☆",
+    "hasDetail": true
+  },
+  "SUM": {
+    "usage": "SUM(number1, [number2], ...)",
+    "params": "number1, number2, ...：要相加的数值，可以是数字、单元格引用、区域或公式结果。最多支持255个参数。",
+    "notes": "• SUM 自动忽略文本和空单元格\\n• 快捷键 Alt+= 可快速插入 SUM\\n• 与 SUMIF/SUMPRODUCT 配合实现条件求和\\n• 区域内含错误值会导致 SUM 返回错误",
+    "example": "=SUM(A1:A10) → 求 A1 到 A10 的总和\\n=SUM(A1:C5) → 整个区域求和\\n=SUM(10,20,A1) → 混合参数求和",
+    "rating": "★★★★★",
+    "stars": "★★★★★",
+    "hasDetail": true
+  }
+}
