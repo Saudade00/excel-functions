@@ -1134,7 +1134,33 @@ const QUIZ_DATA = {
     { type:"choice", question:"A1=85，下列公式的结果是什么？\n=IF(A1>=60, \"及格\", \"不及格\")", options:["及格","不及格","TRUE","FALSE"],
   "ABS": [
     { type: "choice", question: "ABS 函数的作用是什么？", options: ["返回数字的绝对值","对数字四舍五入","返回数字的平方根","返回数字的符号"], answer: 0, explanation: "ABS(number) 返回一个数的绝对值，即去掉负号的数值。例如 ABS(-10)=10。" }
-  ],
+  ,
+  {
+    type: "choice",
+    question: "ABS 函数属于哪一类？",
+    options: [
+      "数学与三角函数",
+      "财务函数",
+      "统计函数",
+      "逻辑函数"
+    ],
+    answer: 0,
+    explanation: "ABS 属于 数学与三角函数。"
+  }
+,
+  {
+    type: "choice",
+    question: "以下哪个是 ABS 函数的正确功能描述？",
+    options: [
+      "返回参数的绝对值",
+      "返回数组的矩阵行列式",
+      "通过行号和列号返回单元格引用",
+      "返回伽玛分布函数的值"
+    ],
+    answer: 0,
+    explanation: "ABS 函数的功能是：返回参数的绝对值"
+  }
+],
   "ACCRINT": [
     { type: "choice", question: "ACCRINT 函数属于哪一类函数？", options: ["统计函数","财务函数","文本函数","逻辑函数"], answer: 1, explanation: "ACCRINT 是财务函数，用于计算定期付息有价证券的应计利息。" }
   ],
@@ -1148,7 +1174,7 @@ const QUIZ_DATA = {
     { type: "choice", question: "ACOSH 函数是什么的反函数？", options: ["COS","SIN","COSH（双曲余弦）","SINH"], answer: 2, explanation: "ACOSH 是反双曲余弦函数，是 COSH 的反函数。" }
   ],
   "ADDRESS": [
-    { type: "choice", question: "ADDRESS(1,1) 默认返回什么？", options: ["A1","$A$1","R1C1","1A"], answer: 1, explanation: "ADDRESS(row_num,column_num) 默认返回绝对引用的单元格地址文本，ADDRESS(1,1) 返回 \"$A$1\"。" }
+    { type: "choice", question: "ADDRESS(1,1) 默认返回什么？", options: ["A1","$A","R1C1","1A"], answer: 1, explanation: "ADDRESS(row_num,column_num) 默认返回绝对引用的单元格地址文本，ADDRESS(1,1) 返回 \"$A\"。" }
   ],
   "AMORDEGRC": [
     { type: "choice", question: "AMORDEGRC 函数用于计算什么？", options: ["折旧","利息","应计利息","投资回报"], answer: 0, explanation: "AMORDEGRC 是财务函数，使用折旧系数计算每个记账期的折旧值（法国会计准则）。" }
@@ -1287,7 +1313,33 @@ const QUIZ_DATA = {
   ],
   "DB": [
     { type: "choice", question: "DB 函数使用什么折旧法？", options: ["固定余额递减法","直线法","年数总和法","双倍余额递减法"], answer: 0, explanation: "DB(成本,残值,寿命,期间) 使用固定余额递减法（Fixed Declining Balance）计算折旧。" }
-  ],
+  ,
+  {
+    type: "choice",
+    question: "DB 函数属于哪一类？",
+    options: [
+      "财务函数",
+      "数学与三角函数",
+      "信息函数",
+      "逻辑函数"
+    ],
+    answer: 0,
+    explanation: "DB 属于 财务函数。"
+  }
+,
+  {
+    type: "choice",
+    question: "以下哪个是 DB 函数的正确功能描述？",
+    options: [
+      "用固定余额递减法算计折旧费",
+      "返回首期付息日不固定的面值 const FUNCTIONS = 00 的有价证券的价格",
+      "返回正态累积分布",
+      "将所有以参数形式给出的数字相乘"
+    ],
+    answer: 0,
+    explanation: "DB 函数的功能是：用固定余额递减法算计折旧费"
+  }
+],
   "DCOUNT": [
     { type: "choice", question: "DCOUNT 函数与 COUNT 函数的区别是？", options: ["DCOUNT 对数据库区域按条件统计","没有区别","DCOUNT 只统计文本","DCOUNT 已被弃用"], answer: 0, explanation: "DCOUNT(数据库,字段,条件) 是数据库函数，根据条件统计数据库中符合条件的数字单元格个数。" }
   ],
@@ -1346,7 +1398,33 @@ const QUIZ_DATA = {
     { type: "choice", question: "INDEX(A1:C3, 2, 3) 返回什么？", options: ["A1:C3 区域中第2行第3列的值","A1:C3 区域中第2行的值","A1:C3 区域中第3列的值","错误"], answer: 0, explanation: "INDEX(数组,行号,列号) 返回数组中指定行列交叉处的值。" }
   ],
   "INDIRECT": [
-    { type: "choice", question: "INDIRECT(\"A1\") 返回什么？", options: ["A1 单元格的引用（即 A1 的值）","文本 \"A1\"","错误","A1 的地址"], answer: 0, explanation: "INDIRECT(文本引用) 将文本字符串转换为实际的单元格引用。INDIRECT(\"A1\") 返回 A1 单元格的值。" }
+    { type: "choice", question: "INDIRECT(\"A1\") 返回什么？", options: ["A1 单元格的引用（即 A1 的值）","文本 \"A1\"","错误","A1 的地址",
+  {
+    type: "choice",
+    question: "ISEVEN 函数属于哪一类？",
+    options: [
+      "信息函数",
+      "统计函数",
+      "财务函数",
+      "数学与三角函数"
+    ],
+    answer: 0,
+    explanation: "ISEVEN 属于 信息函数。"
+  }
+,
+  {
+    type: "choice",
+    question: "以下哪个是 ISEVEN 函数的正确功能描述？",
+    options: [
+      "如果数字为偶数，则返回 TRUE",
+      "将序列号转换为小时",
+      "按绝对值减小的方向舍入某一数字。",
+      "返回一元二项式分布的概率值"
+    ],
+    answer: 0,
+    explanation: "ISEVEN 函数的功能是：如果数字为偶数，则返回 TRUE"
+  }
+], answer: 0, explanation: "INDIRECT(文本引用) 将文本字符串转换为实际的单元格引用。INDIRECT(\"A1\") 返回 A1 单元格的值。" }
   ],
   "INT": [
     { type: "choice", question: "INT(-3.7) 的返回值是多少？", options: ["-4","-3","3.7","错误"], answer: 0, explanation: "INT(数字) 将数字向下舍入到最接近的整数。INT(-3.7)=-4（不是-3）。" }
@@ -1699,7 +1777,7 @@ const QUIZ_DATA = {
   ],
   "RANK": [
     { type:"choice", question:"=RANK(85, A1:A10, 0) 中参数 0 的作用是？", options:["降序排名（最大值排第1）","升序排名（最小值排第1）","忽略重复值","返回百分比排名"], answer:0, explanation:"RANK 第三参数：0 或省略=降序（最大值第1），1=升序（最小值第1）。" },
-    { type:"fill", question:"对 B2 的值在 $B$1:$B$20 范围内进行升序排名（小的排前面）。\n=RANK(B2, $B$1:$B$20, _____)", answer:"1", explanation:"升序排名第三参数填 1。注意排名范围要用绝对引用，方便公式向下拖拽。" }
+    { type:"fill", question:"对 B2 的值在 $B:$B$20 范围内进行升序排名（小的排前面）。\n=RANK(B2, $B:$B$20, _____)", answer:"1", explanation:"升序排名第三参数填 1。注意排名范围要用绝对引用，方便公式向下拖拽。" }
   ],
   "SUM": [
     { type:"choice", question:"=SUM(1, 2, A1:A3) 中 A1:A3={4,5,6}，结果是？", options:["18","12","15","21"], answer:0, explanation:"SUM 可以同时接受数字和范围，1+2+4+5+6 = 18。" },
@@ -1901,7 +1979,7 @@ const QUIZ_DATA = {
   "CODE": [{"type":"choice","question":"=CODE(\"A\") 的结果是？","options":["65","A","97","错误"],"answer":0,"explanation":"CODE 返回文本第一个字符的 ASCII 码，A 的 ASCII 码是 65。"}],
   "CLEAN": [{"type":"choice","question":"CLEAN 函数的主要作用是？","options":["删除文本中的不可打印字符","删除所有空格","删除数字","删除指定字符"],"answer":0,"explanation":"CLEAN 删除文本中所有不可打印的字符（ASCII 0-31），常用于清理从其他系统导入的数据。"}],
   "CONCATENATE": [{"type":"choice","question":"=CONCATENATE(\"Hello\", \" \", \"World\") 的结果是？","options":["Hello World","HelloWorld","Hello+World","错误"],"answer":0,"explanation":"CONCATENATE 将多个文本拼接成一个，\"Hello\"&\" \"&\"World\" = \"Hello World\"。"}],
-  "DOLLAR": [{"type":"choice","question":"=DOLLAR(1234.5) 的默认结果是？","options":["$1,234.50","1234.5","¥1234.50","$1234.5"],"answer":0,"explanation":"DOLLAR 将数字转为货币格式文本，默认用 $ 和两位小数，带千位分隔符。"}],
+  "DOLLAR": [{"type":"choice","question":"=DOLLAR(1234.5) 的默认结果是？","options":[",234.50","1234.5","¥1234.50","234.5"],"answer":0,"explanation":"DOLLAR 将数字转为货币格式文本，默认用 $ 和两位小数，带千位分隔符。"}],
   "EXACT": [{"type":"choice","question":"=EXACT(\"ABC\", \"abc\") 的结果是？","options":["FALSE","TRUE","ABC","错误"],"answer":0,"explanation":"EXACT 区分大小写比较两个文本，\"ABC\" 和 \"abc\" 不相同，返回 FALSE。"}],
   "FIXED": [{"type":"choice","question":"=FIXED(1234.567, 1) 的结果是？","options":["1,234.6","1234.567","1234.6","\"1234.6\""],"answer":0,"explanation":"FIXED 将数字转为带千位分隔符的文本并保留指定位数，四舍五入后为 \"1,234.6\"（文本）。"}],
   "T": [{"type":"choice","question":"=T(A1) 当 A1=123 时的结果是？","options":["\"\"（空文本）","123","\"123\"","错误"],"answer":0,"explanation":"T 函数只返回文本值，如果参数不是文本则返回空文本 \"\"。123 是数字，所以返回 \"\"。"}],
@@ -1909,7 +1987,7 @@ const QUIZ_DATA = {
   "CHOOSE": [{"type":"choice","question":"=CHOOSE(2, \"苹果\", \"香蕉\", \"橙子\") 的结果是？","options":["香蕉","苹果","橙子","错误"],"answer":0,"explanation":"CHOOSE 根据索引值返回参数列表中的对应值，索引 2 对应第二个参数「香蕉」。"}],
   "LOOKUP": [{"type":"choice","question":"LOOKUP 函数与 VLOOKUP 的区别是？","options":["LOOKUP 只能向量查找，且需排序列","LOOKUP 功能更强","VLOOKUP 需要排序列","两者完全相同"],"answer":0,"explanation":"LOOKUP 有两种形式：向量型和数组型。向量型需要在第一列查找并返回第二列，且查找列必须升序排列。"}],
   "TRANSPOSE": [{"type":"choice","question":"TRANSPOSE 函数的作用是？","options":["将行转换成列（转置）","将列转换成行","删除重复行","查找数据"],"answer":0,"explanation":"TRANSPOSE 将数组的行和列互换（转置）。在 Office 365 中直接输入即可，旧版本需要 Ctrl+Shift+Enter。"}],
-  "CELL": [{"type":"choice","question":"=CELL(\"address\", A1) 返回的是？","options":["A1 的单元格地址（如 $A$1）","A1 的值","A1 的列号","错误"],"answer":0,"explanation":"CELL(info_type, reference) 返回引用单元格的格式、位置或内容信息。\"address\" 返回单元格地址。"}],
+  "CELL": [{"type":"choice","question":"=CELL(\"address\", A1) 返回的是？","options":["A1 的单元格地址（如 $A）","A1 的值","A1 的列号","错误"],"answer":0,"explanation":"CELL(info_type, reference) 返回引用单元格的格式、位置或内容信息。\"address\" 返回单元格地址。"}],
   "ERROR.TYPE": [{"type":"choice","question":"=ERROR.TYPE(#DIV/0!) 的结果是？","options":["2","1","#DIV/0!","错误"],"answer":0,"explanation":"ERROR.TYPE 返回错误值对应的数字：#NULL! =1，#DIV/0! =2，#VALUE! =3，#REF! =4，#NAME? =5，#NUM! =6，#N/A =7。"}],
   "INFO": [{"type":"choice","question":"=INFO(\"version\") 返回的是？","options":["Excel 版本号","当前文件名","当前操作系统","错误"],"answer":0,"explanation":"INFO(type_text) 返回当前操作环境的信息。\"version\" 返回 Excel 版本号（如 \"16.0\"）。"}],
   "ISFORMULA": [{"type":"choice","question":"=ISFORMULA(A1) 当 A1 中含有 =SUM(B1:B10) 时结果是？","options":["TRUE","FALSE","#FORMULA!","错误"],"answer":0,"explanation":"ISFORMULA 判断单元格是否包含公式，A1 含有公式时返回 TRUE。"}],
