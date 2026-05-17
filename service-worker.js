@@ -1,13 +1,13 @@
 // service-worker.js - 离线缓存策略
-// 使用 Workbox 风格但手动实现，缓存静态资源
+// 手动实现 Workbox 风格的静态资源缓存
 
 const CACHE_NAME = 'excel-functions-v3';
-const STATIC_CACHE = 'static-v3';
 
 // 需要预缓存的静态资源
 const PRECACHE_URLS = [
   './index.html',
   './manifest.json',
+  './service-worker.js',
   './css/style.css',
   './js/utils.js',
   './js/data.js',
@@ -23,7 +23,7 @@ const PRECACHE_URLS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
-      .open(STATIC_CACHE)
+      .open(CACHE_NAME)
       .then((cache) => cache.addAll(PRECACHE_URLS))
       .then(() => self.skipWaiting())
   );
@@ -37,7 +37,7 @@ self.addEventListener('activate', (event) => {
       .then((keys) =>
         Promise.all(
           keys
-            .filter((key) => key !== STATIC_CACHE)
+            .filter((key) => key !== CACHE_NAME)
             .map((key) => caches.delete(key))
         )
       )
@@ -45,39 +45,27 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// fetch 事件：缓存优先策略
+// fetch 事件：缓存优先 + 后台更新（stale-while-revalidate）
 self.addEventListener('fetch', (event) => {
-  // 只处理 GET 请求
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        // 返回缓存，同时在后台更新缓存（stale-while-revalidate）
-        fetchAndCache(event.request);
-        return cachedResponse;
-      }
+      // 后台更新缓存
+      const fetchPromise = fetch(event.request)
+        .then((response) => {
+          if (response && response.status === 200 && response.type === 'basic') {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return response;
+        })
+        .catch(() => null); // 网络失败时静默失败
 
-      // 无缓存，正常请求并缓存
-      return fetchAndCache(event.request).catch(
-        () => caches.match('./index.html') // 离线时返回首页
-      );
+      // 有缓存立即返回，无缓存则等待网络
+      return cachedResponse || fetchPromise || caches.match('./index.html');
     })
   );
 });
-
-// 请求并缓存
-function fetchAndCache(request) {
-  return fetch(request).then((response) => {
-    if (!response || response.status !== 200 || response.type !== 'basic') {
-      return response;
-    }
-
-    const responseToCache = response.clone();
-    caches.open(STATIC_CACHE).then((cache) => {
-      cache.put(request, responseToCache);
-    });
-
-    return response;
-  });
-}

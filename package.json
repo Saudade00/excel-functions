@@ -6,7 +6,7 @@
   "main": "index.html",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node -e \"const fs=require('fs');fs.copyFileSync('service-worker.js','dist/service-worker.js')\"",
+    "build": "vite build && node scripts/copy-to-dist.cjs",
     "build:analyze": "ANALYZE=1 vite build",
     "preview": "vite preview",
     "lint": "eslint js/ data/ --ext .js,.ts",

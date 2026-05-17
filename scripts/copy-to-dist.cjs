@@ -1,0 +1,1 @@
+const fs=require("fs");const path=require("path");const files=["js/utils.js","js/data.js","js/favorites.js","js/theme.js","js/modal.js","js/app.js","js/quiz.js","data/functions.js","service-worker.js"];files.forEach(f=>{const d="dist/"+f;fs.mkdirSync(path.dirname(d),{recursive:true});fs.copyFileSync(f,d);console.log("[copy]",f);});console.log("[copy] Done!");
