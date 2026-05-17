@@ -1,7 +1,7 @@
 // service-worker.js - 离线缓存策略
 // 手动实现 Workbox 风格的静态资源缓存
 
-const CACHE_NAME = 'excel-functions-v3';
+const CACHE_NAME = 'excel-functions-v4';
 
 // 需要预缓存的静态资源
 const PRECACHE_URLS = [

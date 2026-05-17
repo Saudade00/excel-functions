@@ -1,4 +1,4 @@
-const FUNCTIONS = [
+var FUNCTIONS = [
   {
     name: 'ABS',
     description: '返回参数的绝对值',

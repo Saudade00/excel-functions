@@ -2,7 +2,7 @@
 // 从外部文件加载 FUNCTIONS 数据
 
 // 分类元数据
-const CAT_META = {
+var CAT_META = {
   日期与时间函数: { icon: '📅', color: '#3b82f6', bg: '#eff6ff' },
   数学与三角函数: { icon: '📐', color: '#10b981', bg: '#ecfdf5' },
   逻辑函数: { icon: '🔀', color: '#f59e0b', bg: '#fffbeb' },
@@ -18,7 +18,7 @@ const CAT_META = {
 };
 
 // 难度数据
-const DIFFICULTY = {
+var DIFFICULTY = {
   // 入门 easy
   IF: 'easy',
   SUM: 'easy',
@@ -67,10 +67,10 @@ const DIFFICULTY = {
   DATEDIF: 'hard',
 };
 
-const DIFF_LABELS = { easy: '🟢 入门', medium: '🟡 进阶', hard: '🔴 高级' };
+var DIFF_LABELS = { easy: '🟢 入门', medium: '🟡 进阶', hard: '🔴 高级' };
 
 // 相关函数推荐
-const RELATED = {
+var RELATED = {
   IF: ['AND', 'OR', 'IFS', 'NOT'],
   AND: ['IF', 'OR', 'NOT', 'IFS'],
   OR: ['IF', 'AND', 'NOT'],
@@ -117,7 +117,7 @@ const RELATED = {
 };
 
 // 分类计数（动态计算）
-let CAT_COUNTS = {};
+var CAT_COUNTS = {};
 
 // 初始化 CAT_COUNTS
 function initCatCounts() {
@@ -131,8 +131,9 @@ function initCatCounts() {
 }
 
 // 全局变量
-const activeCategory = 'all';
-const searchQuery = '';
-const sortMode = 'name';
-const showFavOnly = false;
-const currentModalFn = null;
+var activeCategory = 'all';
+var searchQuery = '';
+var sortMode = 'name';
+var showFavOnly = false;
+// currentModalFn 已在 modal.js 中声明，此处不再重复
+var fnMap = {};

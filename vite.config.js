@@ -1,11 +1,27 @@
 import { defineConfig } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 import compression from 'vite-plugin-compression';
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
+
+// Vite 插件：将 html2canvas.min.js 作为静态资源复制到 dist/js/
+function copyHtml2CanvasPlugin() {
+  return {
+    name: 'copy-html2canvas',
+    generateBundle() {
+      this.emitFile({
+        type: 'asset',
+        fileName: 'js/html2canvas.min.js',
+        source: readFileSync(resolve(__dirname, 'js/html2canvas.min.js')),
+      });
+    },
+  };
+}
 
 export default defineConfig({
   root: '.',
   base: './',
-  publicDir: false, // 不复制 public/ 目录
+  publicDir: false,
   server: {
     port: 3000,
     open: true,
@@ -21,7 +37,6 @@ export default defineConfig({
       output: {
         entryFileNames: 'js/[name].js',
         chunkFileNames: 'js/[name].js',
-        // manifest.json 和 service-worker.js 保持原路径，其他资源按类型分目录
         assetFileNames: (assetInfo) => {
           const name = assetInfo.name || '';
           if (name.endsWith('manifest.json') || name.endsWith('service-worker.js')) {
@@ -37,6 +52,7 @@ export default defineConfig({
     devSourcemap: true,
   },
   plugins: [
+    copyHtml2CanvasPlugin(),
     compression({ algorithm: 'gzip', ext: '.gz' }),
     compression({ algorithm: 'brotliCompress', ext: '.br' }),
     process.env.ANALYZE

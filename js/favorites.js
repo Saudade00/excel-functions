@@ -1,7 +1,7 @@
 // favorites.js - 收藏夹功能模块
 // 依赖：需要在 app.js 之前加载
 
-const FAV_KEY = 'excel_fav_v1';
+var FAV_KEY = 'excel_fav_v1';
 
 // 加载收藏列表
 function loadFavs() {
@@ -18,7 +18,7 @@ function saveFavs(arr) {
 }
 
 // 收藏集合
-const favSet = new Set(loadFavs());
+var favSet = new Set(loadFavs());
 
 // 切换收藏状态
 function toggleFav(fnName, e) {

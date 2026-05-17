@@ -32,6 +32,7 @@
   "author": "Hai",
   "license": "MIT",
   "dependencies": {
+    "html2canvas": "^1.4.1",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

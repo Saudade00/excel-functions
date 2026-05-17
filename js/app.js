@@ -2,20 +2,34 @@
 // 依赖：utils.js, data.js, favorites.js, theme.js, modal.js
 
 // 懒加载配置
-const BATCH_SIZE = 50;
-let currentBatch = [];
-let renderedCount = 0;
-let loadMoreObserver = null;
-let sentinelEl = null;
+var BATCH_SIZE = 50;
+var currentBatch = [];
+var renderedCount = 0;
+var loadMoreObserver = null;
+var sentinelEl = null;
 
 // 初始化应用
-document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    // 构建 fnMap
+    fnMap = {};
+    FUNCTIONS.forEach((f) => { fnMap[f.name] = f; });
+    initCatCounts();
+    initHeaderStats();
+    buildFilterTags();
+    bindEvents();
+    render();
+  });
+} else {
+  // 构建 fnMap
+  fnMap = {};
+  FUNCTIONS.forEach((f) => { fnMap[f.name] = f; });
   initCatCounts();
   initHeaderStats();
   buildFilterTags();
   bindEvents();
   render();
-});
+}
 
 // 初始化分类计数
 function initCatCounts() {

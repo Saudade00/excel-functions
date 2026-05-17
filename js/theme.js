@@ -1,6 +1,6 @@
 // theme.js - 暗色模式模块
 
-const THEME_KEY = 'excel_theme_v1';
+var THEME_KEY = 'excel_theme_v1';
 
 // 加载主题
 function loadTheme() {
@@ -30,4 +30,8 @@ function updateThemeBtn() {
 }
 
 // 页面加载时初始化主题
-document.addEventListener('DOMContentLoaded', loadTheme);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadTheme);
+} else {
+  loadTheme();
+}

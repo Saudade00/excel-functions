@@ -83,7 +83,13 @@
       </div>
       <div class="modal-actions" style="position:relative;">
         <button class="modal-fav-btn" id="modalFavBtn">☆ 收藏</button>
-        <button class="modal-screenshot-btn" id="screenshotBtn">📷 截图 ▾</button>
+        <button class="modal-screenshot-btn" id="screenshotBtn" onclick="toggleScreenshotMenu(event)">📷 截图 ▾</button>
+        <div class="screenshot-menu" id="screenshotMenu" style="display:none;">
+          <button onclick="doScreenshot('clipboard')">📋 复制到剪贴板</button>
+          <div class="divider"></div>
+          <button onclick="doScreenshot('savepicker')">💾 另存为…（推荐）</button>
+          <button onclick="doScreenshot('download')">⬇️ 直接下载</button>
+        </div>
         <button class="modal-close" onclick="closeModalBtn()">✕</button>
       </div>
     </div>
@@ -117,6 +123,7 @@
 <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="切换暗色/亮色模式">🌙</button>
 
 <!-- 加载 JavaScript（全局脚本，非 module） -->
+<script src="js/html2canvas.min.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/data.js"></script>
 <script src="js/favorites.js"></script>
