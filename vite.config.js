@@ -1,30 +1,51 @@
 import { defineConfig } from 'vite';
+import { visualizer } from 'rollup-plugin-visualizer';
+import compression from 'vite-plugin-compression';
 
 export default defineConfig({
-  root: '.', // 项目根目录
-  base: './', // 使用相对路径
+  root: '.',
+  base: './',
+  publicDir: false, // 不复制 public/ 目录
   server: {
-    port: 3000, // 开发服务器端口
-    open: true, // 自动打开浏览器
-    host: '127.0.0.1', // 监听地址
+    port: 3000,
+    open: true,
+    host: '127.0.0.1',
   },
   build: {
-    outDir: 'dist', // 构建输出目录
-    assetsDir: 'assets', // 静态资源目录
-    minify: 'terser', // 使用 terser 压缩
-    sourcemap: true, // 生成 source map
+    outDir: 'dist',
+    assetsDir: 'assets',
+    minify: 'terser',
+    sourcemap: true,
     rollupOptions: {
-      // 不打包，只复制文件
       input: 'index.html',
       output: {
-        // 保持原始文件名
         entryFileNames: 'js/[name].js',
         chunkFileNames: 'js/[name].js',
-        assetFileNames: '[ext]/[name].[ext]',
+        // manifest.json 和 service-worker.js 保持原路径，其他资源按类型分目录
+        assetFileNames: (assetInfo) => {
+          const name = assetInfo.name || '';
+          if (name.endsWith('manifest.json') || name.endsWith('service-worker.js')) {
+            return '[name].[ext]';
+          }
+          const ext = name.split('.').pop();
+          return `${ext}/[name].[ext]`;
+        },
       },
     },
   },
   css: {
-    devSourcemap: true, // CSS sourcemap
+    devSourcemap: true,
   },
+  plugins: [
+    compression({ algorithm: 'gzip', ext: '.gz' }),
+    compression({ algorithm: 'brotliCompress', ext: '.br' }),
+    process.env.ANALYZE
+      ? visualizer({
+          filename: './dist/stats.html',
+          open: true,
+          gzipSize: true,
+          brotliSize: true,
+        })
+      : null,
+  ].filter(Boolean),
 });

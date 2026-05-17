@@ -1,6 +1,13 @@
 // app.js - 主应用逻辑
 // 依赖：utils.js, data.js, favorites.js, theme.js, modal.js
 
+// 懒加载配置
+const BATCH_SIZE = 50;
+let currentBatch = [];
+let renderedCount = 0;
+let loadMoreObserver = null;
+let sentinelEl = null;
+
 // 初始化应用
 document.addEventListener('DOMContentLoaded', () => {
   initCatCounts();
@@ -156,14 +163,14 @@ function getFiltered() {
   } else if (sortMode === 'fav') {
     fns = [...fns].sort(
       (a, b) =>
-        (favSet.has(b.name) ? 1 : 0) - (favSet.has(a.name) ? 1 : 0) || a.name.localeCompare(b.name)
+        (favSet.has(b.name) ? 1 : 0) - (favSet.has(a.name) ? 1 : 0) || a.name.locateCompare(b.name)
     );
   }
 
   return fns;
 }
 
-// 渲染函数卡片（使用 DOM 创建，修复 XSS 漏洞）
+// 渲染函数卡片（懒加载版）
 function render() {
   const fns = getFiltered();
   const grid = document.getElementById('functionGrid');
@@ -171,7 +178,6 @@ function render() {
   const countEl = document.getElementById('resultsCount');
 
   countEl.innerHTML = `共 <strong>${fns.length}</strong> 个函数${searchQuery ? ' (搜索: "' + escHtml(searchQuery) + '"）' : ''}`;
-
   if (fns.length === 0) {
     grid.innerHTML = '';
     empty.style.display = 'block';
@@ -180,17 +186,81 @@ function render() {
 
   empty.style.display = 'none';
   grid.innerHTML = '';
+  currentBatch = fns;
+  renderedCount = 0;
 
-  // 使用 DocumentFragment 提升性能
+  // 渲染首批
+  appendBatch(grid);
+
+  // 设置 Intersection Observer 懒加载
+  setupLazyLoad(grid);
+}
+
+// 追加一批卡片
+function appendBatch(grid) {
   const fragment = document.createDocumentFragment();
+  const end = Math.min(renderedCount + BATCH_SIZE, currentBatch.length);
 
-  fns.forEach((f) => {
+  for (let i = renderedCount; i < end; i++) {
+    const f = currentBatch[i];
     const meta = CAT_META[f.category] || CAT_META['其他函数'];
     const card = createFunctionCard(f, meta);
     fragment.appendChild(card);
-  });
+  }
 
   grid.appendChild(fragment);
+  renderedCount = end;
+}
+
+// 设置懒加载观察者
+function setupLazyLoad(grid) {
+  // 断开之前的观察者
+  if (loadMoreObserver) {
+    loadMoreObserver.disconnect();
+    loadMoreObserver = null;
+  }
+  if (sentinelEl) {
+    sentinelEl.remove();
+    sentinelEl = null;
+  }
+
+  // 如果已全部渲染，不需要观察者
+  if (renderedCount >= currentBatch.length) return;
+
+  // 创建哨兵元素
+  sentinelEl = createEl('div', {
+    className: 'sentinel',
+    style: 'height:20px;grid-column:1/-1;',
+  });
+  grid.appendChild(sentinelEl);
+
+  loadMoreObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      // 移除哨兵，追加下一批
+      if (sentinelEl) {
+        sentinelEl.remove();
+        sentinelEl = null;
+      }
+      appendBatch(grid);
+
+      // 如果还有更多，重新设置观察者
+      if (renderedCount < currentBatch.length) {
+        sentinelEl = createEl('div', {
+          className: 'sentinel',
+          style: 'height:20px;grid-column:1/-1;',
+        });
+        grid.appendChild(sentinelEl);
+        loadMoreObserver.observe(sentinelEl);
+      } else {
+        loadMoreObserver.disconnect();
+        loadMoreObserver = null;
+      }
+    }
+  }, {
+    rootMargin: '200px', // 提前 200px 触发加载
+  });
+
+  loadMoreObserver.observe(sentinelEl);
 }
 
 // 创建函数卡片（使用 DOM，避免 XSS）
