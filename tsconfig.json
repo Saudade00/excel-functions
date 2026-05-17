@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    // 允许检查 JavaScript 文件
+    "allowJs": true,
+    // 不生成输出文件（只进行类型检查）
+    "noEmit": true,
+    // 禁用严格模式（全局脚本模式不兼容）
+    "strict": false,
+    // 禁用未检查的索引访问
+    "noUncheckedIndexedAccess": false,
+    // 模块系统（如果使用 ES modules）
+    "module": "ESNext",
+    "moduleResolution": "node",
+    // 目标 JavaScript 版本
+    "target": "ES2022",
+    // 启用 ESNext 特性
+    "lib": ["ES2022", "DOM"],
+    // 允许默认导入非 ES 模块
+    "esModuleInterop": true,
+    // 允许合成默认导入
+    "allowSyntheticDefaultImports": true,
+    // 强制文件名大小写敏感
+    "forceConsistentCasingInFileNames": true,
+    // 报告未使用的局部变量
+    "noUnusedLocals": false,
+    // 报告未使用的参数
+    "noUnusedParameters": false,
+    // 检查 JS 文件时，使用 JSDoc 类型注解
+    "checkJs": false, // 禁用，因为全局脚本模式
+    // 启用 JSDoc 类型注解
+    "maxNodeModuleJsDepth": 0
+  },
+  // 包含的文件/目录
+  "include": ["js/**/*.js", "data/**/*.js"],
+  // 排除的文件/目录
+  "exclude": ["node_modules", "dist", "backups", "js/raw_script.js", "test_script.js"]
+}

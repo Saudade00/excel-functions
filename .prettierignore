@@ -1,0 +1,14 @@
+# 忽略文件
+node_modules/
+dist/
+backups/
+*.log
+*.bak*
+npm-debug.log*
+.DS_Store
+*.swp
+*.swo
+*~
+.env
+.vscode/
+.idea/
