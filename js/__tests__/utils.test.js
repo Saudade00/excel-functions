@@ -61,10 +61,10 @@ describe('debounce', () => {
   test('应该延迟函数执行', () => {
     const func = jest.fn();
     const debounced = debounce(func, 1000);
-    
+
     debounced();
     expect(func).not.toHaveBeenCalled();
-    
+
     jest.advanceTimersByTime(1000);
     expect(func).toHaveBeenCalledTimes(1);
   });
@@ -72,13 +72,13 @@ describe('debounce', () => {
   test('应该在多次调用时重置计时器', () => {
     const func = jest.fn();
     const debounced = debounce(func, 1000);
-    
+
     debounced();
     jest.advanceTimersByTime(500);
     debounced();
     jest.advanceTimersByTime(500);
     expect(func).not.toHaveBeenCalled();
-    
+
     jest.advanceTimersByTime(500);
     expect(func).toHaveBeenCalledTimes(1);
   });
@@ -97,13 +97,13 @@ describe('throttle', () => {
   test('应该限制函数执行频率', () => {
     const func = jest.fn();
     const throttled = throttle(func, 1000);
-    
+
     throttled();
     expect(func).toHaveBeenCalledTimes(1);
-    
+
     throttled();
     expect(func).toHaveBeenCalledTimes(1); // 还在冷却期内
-    
+
     jest.advanceTimersByTime(1000);
     throttled();
     expect(func).toHaveBeenCalledTimes(2);

@@ -13,7 +13,9 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     // 构建 fnMap
     fnMap = {};
-    FUNCTIONS.forEach((f) => { fnMap[f.name] = f; });
+    FUNCTIONS.forEach((f) => {
+      fnMap[f.name] = f;
+    });
     initCatCounts();
     initHeaderStats();
     buildFilterTags();
@@ -23,7 +25,9 @@ if (document.readyState === 'loading') {
 } else {
   // 构建 fnMap
   fnMap = {};
-  FUNCTIONS.forEach((f) => { fnMap[f.name] = f; });
+  FUNCTIONS.forEach((f) => {
+    fnMap[f.name] = f;
+  });
   initCatCounts();
   initHeaderStats();
   buildFilterTags();
@@ -248,31 +252,34 @@ function setupLazyLoad(grid) {
   });
   grid.appendChild(sentinelEl);
 
-  loadMoreObserver = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) {
-      // 移除哨兵，追加下一批
-      if (sentinelEl) {
-        sentinelEl.remove();
-        sentinelEl = null;
-      }
-      appendBatch(grid);
+  loadMoreObserver = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting) {
+        // 移除哨兵，追加下一批
+        if (sentinelEl) {
+          sentinelEl.remove();
+          sentinelEl = null;
+        }
+        appendBatch(grid);
 
-      // 如果还有更多，重新设置观察者
-      if (renderedCount < currentBatch.length) {
-        sentinelEl = createEl('div', {
-          className: 'sentinel',
-          style: 'height:20px;grid-column:1/-1;',
-        });
-        grid.appendChild(sentinelEl);
-        loadMoreObserver.observe(sentinelEl);
-      } else {
-        loadMoreObserver.disconnect();
-        loadMoreObserver = null;
+        // 如果还有更多，重新设置观察者
+        if (renderedCount < currentBatch.length) {
+          sentinelEl = createEl('div', {
+            className: 'sentinel',
+            style: 'height:20px;grid-column:1/-1;',
+          });
+          grid.appendChild(sentinelEl);
+          loadMoreObserver.observe(sentinelEl);
+        } else {
+          loadMoreObserver.disconnect();
+          loadMoreObserver = null;
+        }
       }
+    },
+    {
+      rootMargin: '200px', // 提前 200px 触发加载
     }
-  }, {
-    rootMargin: '200px', // 提前 200px 触发加载
-  });
+  );
 
   loadMoreObserver.observe(sentinelEl);
 }

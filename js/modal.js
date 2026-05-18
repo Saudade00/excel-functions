@@ -162,39 +162,44 @@ function doScreenshot(mode) {
   btn.classList.add('capturing');
   btn.innerHTML = '⏳ 生成中…';
 
-  window.html2canvas(modal, {
-    backgroundColor: '#ffffff',
-    scale: 2,
-    useCORS: true,
-    logging: false,
-  }).then(canvas => {
-    canvas.toBlob(blob => {
-      if (mode === 'clipboard') {
-        copyBlobToClipboard(blob, btn);
-      } else if (mode === 'savepicker') {
-        saveWithPicker(blob, fnName, btn);
-      } else {
-        downloadBlob(blob, fnName, btn);
-      }
-    }, 'image/png');
-  }).catch(e => {
-    alert('截图失败：' + e.message);
-    btn.classList.remove('capturing');
-    btn.innerHTML = '📷 截图 ▾';
-  });
+  window
+    .html2canvas(modal, {
+      backgroundColor: '#ffffff',
+      scale: 2,
+      useCORS: true,
+      logging: false,
+    })
+    .then((canvas) => {
+      canvas.toBlob((blob) => {
+        if (mode === 'clipboard') {
+          copyBlobToClipboard(blob, btn);
+        } else if (mode === 'savepicker') {
+          saveWithPicker(blob, fnName, btn);
+        } else {
+          downloadBlob(blob, fnName, btn);
+        }
+      }, 'image/png');
+    })
+    .catch((e) => {
+      alert('截图失败：' + e.message);
+      btn.classList.remove('capturing');
+      btn.innerHTML = '📷 截图 ▾';
+    });
 }
 
 // 复制到剪贴板（最推荐，无文件安全问题）
 async function copyBlobToClipboard(blob, btn) {
   try {
-    await navigator.clipboard.write([
-      new ClipboardItem({ 'image/png': blob })
-    ]);
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
     btn.classList.remove('capturing');
     btn.innerHTML = '✅ 已复制';
-    setTimeout(() => { btn.innerHTML = '📷 截图 ▾'; }, 2000);
+    setTimeout(() => {
+      btn.innerHTML = '📷 截图 ▾';
+    }, 2000);
   } catch (e) {
-    alert('剪贴板复制失败（需要 HTTPS 或浏览器权限），已改为直接下载。\n如需复制，请在浏览器地址栏点击🔒图标允许剪贴板权限。');
+    alert(
+      '剪贴板复制失败（需要 HTTPS 或浏览器权限），已改为直接下载。\n如需复制，请在浏览器地址栏点击🔒图标允许剪贴板权限。'
+    );
     const fnName = document.getElementById('modalName').textContent.trim() || 'function';
     downloadBlob(blob, fnName, btn);
   }
@@ -209,14 +214,16 @@ async function saveWithPicker(blob, fnName, btn) {
   try {
     const handle = await window.showSaveFilePicker({
       suggestedName: 'Excel函数_' + fnName + '.png',
-      types: [{ description: 'PNG 图片', accept: { 'image/png': ['.png'] } }]
+      types: [{ description: 'PNG 图片', accept: { 'image/png': ['.png'] } }],
     });
     const writable = await handle.createWritable();
     await writable.write(blob);
     await writable.close();
     btn.classList.remove('capturing');
     btn.innerHTML = '✅ 已保存';
-    setTimeout(() => { btn.innerHTML = '📷 截图 ▾'; }, 2000);
+    setTimeout(() => {
+      btn.innerHTML = '📷 截图 ▾';
+    }, 2000);
   } catch (e) {
     if (e.name !== 'AbortError') {
       downloadBlob(blob, fnName, btn);
@@ -239,5 +246,7 @@ function downloadBlob(blob, fnName, btn) {
   setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
   btn.classList.remove('capturing');
   btn.innerHTML = '✅ 已下载';
-  setTimeout(() => { btn.innerHTML = '📷 截图 ▾'; }, 2000);
+  setTimeout(() => {
+    btn.innerHTML = '📷 截图 ▾';
+  }, 2000);
 }
