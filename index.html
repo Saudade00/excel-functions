@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel 函数大全 · 交互式参考手册</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%93%8A%3C/text%3E%3C/svg%3E">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#1a56db">
+  <link rel="stylesheet" crossorigin href="./css/index.css">
+</head>
+<body>
+
+<!-- PWA 安装提示 -->
+<div class="pwa-install-banner" id="pwaInstallBanner">
+  <div class="pwa-banner-content">
+    <span>📲 安装此应用到桌面，随时离线访问</span>
+    <button class="pwa-install-btn" id="pwaInstallBtn">安装</button>
+    <button class="pwa-dismiss-btn" id="pwaDismissBtn">✕</button>
+  </div>
+</div>
+
+<div class="header">
+  <div class="header-content">
+    <h1>📊 Excel 函数大全</h1>
+    <p>交互式参考手册 · 快速搜索 · 分类浏览 · 详细说明</p>
+    <div class="header-stats" id="headerStats"></div>
+    <div style="margin-top:16px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
+      <button class="quiz-center-btn" onclick="openQuizCenter()">🎯 练习中心 · 查看学习进度</button>
+      <button class="quiz-center-btn" style="background:linear-gradient(135deg,#e11d48,#be185d);" onclick="openWrongBook()">📕 错题本</button>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="search-section">
+    <div class="search-wrap">
+      <span class="search-icon">🔎</span>
+      <input type="text" id="searchInput" placeholder="搜索函数名称或功能描述，例如：VLOOKUP、查找、日期..." autocomplete="off">
+    </div>
+  </div>
+
+  <div class="filter-section">
+    <div class="filter-label">函数分类</div>
+    <div class="filter-tags" id="filterTags"></div>
+  </div>
+
+  <div class="filter-toolbar">
+    <button class="filter-toolbar-btn" id="favFilterBtn" onclick="toggleFavFilter()">⭐ 我的收藏</button>
+    <select class="difficulty-select" id="diffSelect" onchange="render()">
+      <option value="all">全部难度</option>
+      <option value="easy">🟢 入门</option>
+      <option value="medium">🟡 进阶</option>
+      <option value="hard">🔴 高级</option>
+    </select>
+  </div>
+
+  <div class="results-info">
+    <div class="results-count" id="resultsCount"></div>
+    <select class="sort-select" id="sortSelect">
+      <option value="name">按名称排序</option>
+      <option value="category">按分类排序</option>
+      <option value="detail">优先显示有详情的</option>
+      <option value="fav">收藏优先</option>
+    </select>
+  </div>
+
+  <div class="grid" id="functionGrid"></div>
+  <div class="empty" id="emptyState" style="display:none;">
+    <div class="empty-icon">🔍</div>
+    <h3>未找到匹配的函数</h3>
+    <p>请尝试其他关键词或清除筛选条件</p>
+  </div>
+</div>
+
+<!-- 函数详情 / 练习题 Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">
+        <div class="modal-fn-name" id="modalName"></div>
+        <div class="modal-fn-desc" id="modalDesc"></div>
+      </div>
+      <div class="modal-actions" style="position:relative;">
+        <button class="modal-fav-btn" id="modalFavBtn">☆ 收藏</button>
+        <button class="modal-screenshot-btn" id="screenshotBtn" onclick="toggleScreenshotMenu(event)">📷 截图 ▾</button>
+        <div class="screenshot-menu" id="screenshotMenu" style="display:none;">
+          <button onclick="doScreenshot('clipboard')">📋 复制到剪贴板</button>
+          <div class="divider"></div>
+          <button onclick="doScreenshot('savepicker')">💾 另存为…（推荐）</button>
+          <button onclick="doScreenshot('download')">⬇️ 直接下载</button>
+        </div>
+        <button class="modal-close" onclick="closeModalBtn()">✕</button>
+      </div>
+    </div>
+    <div class="modal-tabs" id="modalTabs">
+      <div class="modal-tab active" data-tab="detail" onclick="switchTab('detail')">📖 函数详情</div>
+      <div class="modal-tab quiz-tab" data-tab="quiz" id="quizTabBtn" style="display:none;" onclick="switchTab('quiz')">
+        🎯 练习题 <span id="quizTabBadge" class="quiz-tab-badge"></span>
+      </div>
+    </div>
+    <div class="modal-tab-panel active" id="panel-detail">
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+    <div class="modal-tab-panel" id="panel-quiz">
+      <div class="quiz-panel" id="quizPanel"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 练习中心弹窗 -->
+<div class="quiz-center-overlay" id="quizCenterOverlay">
+  <div class="quiz-center-modal">
+    <div class="quiz-center-header">
+      <h2>🎯 练习中心</h2>
+      <button class="modal-close" onclick="closeQuizCenter()">✕</button>
+    </div>
+    <div class="quiz-center-body" id="quizCenterBody"></div>
+  </div>
+</div>
+
+<!-- 暗色模式切换按钮 -->
+<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="切换暗色/亮色模式">🌙</button>
+
+<!-- 加载 JavaScript（全局脚本，非 module） -->
+<script src="js/html2canvas.min.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/data.js"></script>
+<script src="js/favorites.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/modal.js"></script>
+<script src="data/functions.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/app.js"></script>
+
+<!-- PWA：注册 Service Worker + 安装提示 -->
+<script>
+// 注册 Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then((reg) => console.log('[SW] 注册成功:', reg.scope))
+      .catch((err) => console.log('[SW] 注册失败:', err));
+  });
+}
+
+// PWA 安装提示逻辑
+let deferredPrompt = null;
+const installBanner = document.getElementById('pwaInstallBanner');
+const installBtn = document.getElementById('pwaInstallBtn');
+const dismissBtn = document.getElementById('pwaDismissBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBanner.classList.add('show');
+});
+
+installBtn.addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === 'accepted') console.log('[PWA] 用户安装了应用');
+  deferredPrompt = null;
+  installBanner.classList.remove('show');
+});
+
+dismissBtn.addEventListener('click', () => {
+  installBanner.classList.remove('show');
+  deferredPrompt = null;
+});
+
+window.addEventListener('appinstalled', () => {
+  console.log('[PWA] 应用已安装');
+  installBanner.classList.remove('show');
+  deferredPrompt = null;
+});
+</script>
+
+</body>
+</html>
